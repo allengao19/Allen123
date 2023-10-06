@@ -16,7 +16,7 @@ pipeline {
 
         stage('Unit and Integration Tests') {
             steps {
-                // Use JUnit or TestNG for running tests
+                echo "Use JUnit or TestNG for running tests"
                 // sh 'mvn test'
             }
         }
