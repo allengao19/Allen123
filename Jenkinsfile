@@ -2,23 +2,22 @@ pipeline {
     agent any 
 
     environment {
-        DIRECTORY_PATH = '/Users/allen/Desktop/myDirectory'
-        TESTING_ENVIRONMENT = 'staging'
-        PRODUCTION_ENVIRONMENT = 'XiangGao'
+        TESTING_ENVIRONMENT = 'Heroku'
+        PRODUCTION_ENVIRONMENT = 'Heroku'
     }
     
     stages {
        stage('Build') {
             steps {
-                echo "fetch the source code from the directory path specified by the environment variable: ${DIRECTORY_PATH}"
-                echo "compile the code and generate any necessary artifacts"
+                 echo "Use Maven as a build tool"
+                // sh 'mvn clean install'
             }
         }
 
-        stage('Test') {
+        stage('Unit and Integration Tests') {
             steps {
-                echo "unit tests"
-                echo "integration tests"
+                // Use JUnit or TestNG for running tests
+                // sh 'mvn test'
             }
         }
 
@@ -28,7 +27,7 @@ pipeline {
                 sh 'npx eslint ./index.js'
             }
         }
-        
+
         stage('Security Scan') {
             steps {
                 // Use npm audit for security scanning
@@ -42,10 +41,9 @@ pipeline {
             }
         }
 
-        stage('Approval') {
+        stage('Integration Tests on Staging') {
             steps {
-                echo "Awaiting manual approval"
-                echo "Approval granted"
+                sh 'bash integration-tests.sh'
             }
         }
 
