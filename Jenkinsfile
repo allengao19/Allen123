@@ -12,6 +12,7 @@ pipeline {
             steps {
                 echo "fetch the source code from the directory path specified by the environment variable: ${DIRECTORY_PATH}"
                 echo "compile the code and generate any necessary artifacts"
+                sh 'npx eslint .'
             }
         }
 
