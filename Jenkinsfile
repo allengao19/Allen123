@@ -8,11 +8,10 @@ pipeline {
     }
     
     stages {
-        stage('Build') {
+       stage('Build') {
             steps {
                 echo "fetch the source code from the directory path specified by the environment variable: ${DIRECTORY_PATH}"
                 echo "compile the code and generate any necessary artifacts"
-                sh 'npx eslint ./index.js'
             }
         }
 
@@ -23,9 +22,17 @@ pipeline {
             }
         }
 
-        stage('Code Quality Check') {
+       stage('Code Analysis') {
             steps {
-                echo "check the quality of the code"
+                // Use Eslint for code analysis
+                sh 'npx eslint ./index.js'
+            }
+        }
+        
+        stage('Security Scan') {
+            steps {
+                // Use npm audit for security scanning
+                sh 'npm audit'
             }
         }
 
@@ -38,7 +45,6 @@ pipeline {
         stage('Approval') {
             steps {
                 echo "Awaiting manual approval"
-                sleep 10 // Pause for 10 seconds
                 echo "Approval granted"
             }
         }
@@ -47,6 +53,13 @@ pipeline {
             steps {
                 echo "deploy the code to the production environment: ${PRODUCTION_ENVIRONMENT}"
             }
+        }
+    }
+    post {
+        success{
+            mail to: 'allengao1215@gmail.com',
+                 subject: "Build Status Email",
+                 body: "Build was successful."
         }
     }
 }
